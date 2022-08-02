@@ -1,0 +1,51 @@
+1st question
+#Write a Flume Configuration file for Extracting Twitter Data About covid-19
+->  TwitterAgent.sources = Twitter
+    TwitterAgent.channels = MemChannel
+    TwitterAgent.sinks = HDFS
+
+-> #describing source
+   TwitterAgent.sources.Twitter.type = Twitter (covid 19 data)
+   TwitterAgent.sources.Twitter.consumerKey =
+   TwitterAgent.sources.Twitter.consumerSecret =
+   TwitterAgent.sources.Twitter.accessToken =
+   TwitterAgent.sources.Twitter.accessTokenSecret =
+
+-> #describing sink
+  TwitterAgent.sinks.HDFS.type = hdfs (type name)
+  TwitterAgent.sinks.HDFS.hdfs.path = HDFS directory’s Path to store the data
+
+-> #describing channel
+  TwitterAgent.channels.MemChannel.type = memory (type name)
+
+->  #binding source and sink to channel
+  TwitterAgent.sources.Twitter.channels = MemChannel
+  TwitterAgent.sinks.HDFS.channels = MemChannel
+
+-> #starting flume agent
+  $ bin/flume-ng agent --conf ./conf/ -f conf/twitter.conf
+Dflume.root.logger=DEBUG,console -n TwitterAgent
+
+
+2nd question 
+Write a sqoop job for extracting data from mysql and put In Hive Warehouse
+
+-> mysql -u root -p
+
+-> create database sqoopdemo //db name sqoopdemo
+
+->show database
+
+-> use sqoopdemo
+
+-> create table pet(name varchar(20), owner varchar(20)) //table name
+
+-> describe pet;
+
+->insert into pet values("puffball","diane");  
+
+-> sqoop import --connect \jdbc:mysql://localhost:3306/sqoopdemo \
+ --username root --password password \
+ --pet \
+ --hive-import --hive-table sqoopdemo.pet \
+ --m 1 
